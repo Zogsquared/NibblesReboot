@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 
+pygame.display.set_caption('Snake Game 2')
 
 class Snake():
     def __init__(self):
@@ -150,6 +151,8 @@ def start():
     surface = surface.convert()
     drawGrid(surface)
 
+    
+
     myfont = pygame.font.SysFont("arial", 82)
     myfont2 = pygame.font.SysFont("arial", 62)
     
@@ -158,6 +161,8 @@ def start():
         screen.blit(surface, (0, 0))
         text = myfont.render("Snake Game 2", 1, (0, 0, 0))
         screen.blit(text, (210, 200))
+        image = pygame.image.load(r'Screenshot_1.png')
+        screen.blit(image, (400, 375))
         text2 = myfont2.render("Press any key to Start", 1, (0, 0, 0))
         screen.blit(text2, (180, 700))
         pygame.display.update()
