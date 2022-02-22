@@ -43,7 +43,7 @@ class Snake():
         for p in self.positions:
             r = pygame.Rect((p[0], p[1]), (gridsize, gridsize))
             pygame.draw.rect(surface, self.color, r)
-            pygame.draw.rect(surface, (247, 27, 93), r, 1)
+            pygame.draw.rect(surface, (227, 27, 93), r, 5)
 
     def handle_keys(self):
         for event in pygame.event.get():
@@ -185,9 +185,11 @@ def end():
 
     myfont = pygame.font.SysFont("arial", 82)
     myfont2 = pygame.font.SysFont("arial", 62)
+    cooldown = 20
     
     while (True):
         clock.tick(10)
+        cooldown -= 1
         screen.blit(surface, (0, 0))
         text = myfont.render("Game Over", 1, (0, 0, 0))
         screen.blit(text, (180, 200))
@@ -196,11 +198,12 @@ def end():
         text3 = myfont2.render("Press any key to Start", 1, (0, 0, 0))
         screen.blit(text3, (180, 700))
         pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
+        if cooldown < 1:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
                     main()
 
 start()
