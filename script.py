@@ -26,7 +26,7 @@ class Snake():
         new = (((cur[0]+(x*gridsize))%screen_width), (cur[1]+(y*gridsize))%screen_height)
         if len(self.positions) > 2 and new in self.positions[2:]:
             self.reset()
-            self.score = 0
+            #self.score = 0
         else:
             self.positions.insert(0,new)
             if len(self.positions) > self.length:
@@ -36,7 +36,7 @@ class Snake():
         self.length = 2
         self.positions = [((screen_width/2), (screen_height/2))]
         self.direction = random.choice([up, down, left, right])
-        self.score = 0
+        end()
 
     def draw(self, surface):
         for p in self.positions:
@@ -86,7 +86,7 @@ def drawGrid(surface):
             else:
                 rr = pygame.Rect((x*gridsize, y*gridsize),
                                  (gridsize, gridsize))
-                pygame.draw.rect(surface, (40, 237, 83), rr)
+                pygame.draw.rect(surface, (40, 227, 83), rr)
 
 
 screen_width = 1000
@@ -100,6 +100,8 @@ up = (0, -1)
 down = (0, 1)
 left = (-1, 0)
 right = (1, 0)
+
+#finalscore = 0
 
 
 def main():
@@ -115,7 +117,9 @@ def main():
     snake = Snake()
     food = Food()
 
-    myfont = pygame.font.SysFont("monospace", 16)
+    myfont = pygame.font.SysFont("comic sans", 36)
+
+    global score
 
     score = 0
     while (True):
@@ -125,14 +129,74 @@ def main():
         snake.move()
         if snake.get_head_position() == food.position:
             snake.length += 1
+            snake.score += 1
             score += 1
             food.randomize_position()
         snake.draw(surface)
         food.draw(surface)
         screen.blit(surface, (0, 0))
-        text = myfont.render("Score {0}".format(score), 1, (0, 0, 0))
+        text = myfont.render("Score: {0}".format(snake.score), 1, (0, 0, 0))
         screen.blit(text, (5, 10))
         pygame.display.update()
 
 
-main()
+def start():
+    pygame.init()
+
+    clock = pygame.time.Clock()
+    screen = pygame.display.set_mode((screen_width, screen_height), 0, 32)
+
+    surface = pygame.Surface(screen.get_size())
+    surface = surface.convert()
+    drawGrid(surface)
+
+    myfont = pygame.font.SysFont("arial", 82)
+    myfont2 = pygame.font.SysFont("arial", 62)
+    
+    while (True):
+        clock.tick(10)
+        screen.blit(surface, (0, 0))
+        text = myfont.render("Snake Game 2", 1, (0, 0, 0))
+        screen.blit(text, (210, 200))
+        text2 = myfont2.render("Press any key to Start", 1, (0, 0, 0))
+        screen.blit(text2, (180, 700))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                    main()
+                    
+def end():
+    pygame.init()
+
+    clock = pygame.time.Clock()
+    screen = pygame.display.set_mode((screen_width, screen_height), 0, 32)
+
+    surface = pygame.Surface(screen.get_size())
+    surface = surface.convert()
+    drawGrid(surface)
+
+    myfont = pygame.font.SysFont("arial", 82)
+    myfont2 = pygame.font.SysFont("arial", 62)
+    
+    while (True):
+        clock.tick(10)
+        screen.blit(surface, (0, 0))
+        text = myfont.render("Game Over", 1, (0, 0, 0))
+        screen.blit(text, (180, 200))
+        text2 = myfont2.render("Score: {0}".format(score), 1, (0, 0, 0))
+        screen.blit(text2, (180, 400))
+        text3 = myfont2.render("Press any key to Start", 1, (0, 0, 0))
+        screen.blit(text3, (180, 700))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                    main()
+
+start()
+#main()
