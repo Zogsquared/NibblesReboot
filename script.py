@@ -25,6 +25,13 @@ class Snake():
         cur = self.get_head_position()
         x, y = self.direction
         new = (((cur[0]+(x*gridsize))%screen_width), (cur[1]+(y*gridsize))%screen_height)
+
+        if len(self.positions) >= screen_height or new in self.positions[screen_height:]:
+            self.reset()
+        
+        if len(self.positions) >= screen_width or new in self.positions[screen_width:]:
+            self.reset()
+
         if len(self.positions) > 2 and new in self.positions[2:]:
             self.reset()
             #self.score = 0
@@ -32,6 +39,7 @@ class Snake():
             self.positions.insert(0,new)
             if len(self.positions) > self.length:
                 self.positions.pop()
+                
 
     def reset(self):
         self.length = 2
@@ -133,6 +141,8 @@ def main():
             snake.score += 1
             score += 1
             food.randomize_position()
+        if snake.get_head_position() == screen_height:
+            end()
         snake.draw(surface)
         food.draw(surface)
         screen.blit(surface, (0, 0))
